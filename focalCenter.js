@@ -18,71 +18,71 @@
         'relativeContainer' : 'window' //unsupported stub
 			}, options);
 
-            $this = $(this);
-            var $container = settings.relativeContainer == 'window' ? $(window) : $this.closest( $( settings.relativeContainer ) );
+      $this = $(this);
+      var $container = settings.relativeContainer == 'window' ? $(window) : $this.closest( $( settings.relativeContainer ) );
 
-            var minWidth = $container.scrollLeft();
-            var maxWidth = $container.width();
-            var centerX = (maxWidth + minWidth) / 2;
-            var minHeight = $container.scrollTop();
-            var maxHeight = $container.height();
-            var centerY = (maxHeight + minHeight)/2;
+      var minWidth = $container.scrollLeft();
+      var maxWidth = $container.width();
+      var centerX = (maxWidth + minWidth) / 2;
+      var minHeight = $container.scrollTop();
+      var maxHeight = $container.height();
+      var centerY = (maxHeight + minHeight)/2;
 
-            var focalPoints = [];
-            $this.each( function(target) {
-                self = this;
-                self.fromCenterX = Math.abs( centerX - ( $(self).offset().left + $(self).width() / 2 ) + minWidth / 2 );
-                self.fromCenterY = Math.abs( centerY - ( $(self).offset().top + $(self).height() / 2 ) + minHeight / 2 );
-                focalPoints.push(self);
-            });
+      var focalPoints = [];
+      $this.each( function(target) {
+        self = this;
+        self.fromCenterX = Math.abs( centerX - ( $(self).offset().left + $(self).width() / 2 ) + minWidth / 2 );
+        self.fromCenterY = Math.abs( centerY - ( $(self).offset().top + $(self).height() / 2 ) + minHeight / 2 );
+        focalPoints.push(self);
+      });
 
 
-            function assignClasses() {
-                var lastFocalPoint = focalPoints.length - 1;
-                if ( $( focalPoints[ lastFocalPoint ] ).hasClass( settings.classToAssign ) ) return false;
-                for ( var f = 0; f < focalPoints.length; f++ ) {
-                    $( focalPoints[f] ).removeClass( settings.classToAssign );
-                }
-                $( focalPoints[ lastFocalPoint ] ).addClass( settings.classToAssign );
-                settings.onChange(focalPoints[ lastFocalPoint ]);
-            }
-            function getDistances() {
-                minWidth = $container.scrollLeft();
-                maxWidth = $container.width();
-                centerX = (maxWidth + minWidth) / 2;
-                minHeight = $container.scrollTop();
-                maxHeight = $container.height();
-                centerY = (maxHeight + minHeight) / 2;
-                for ( var i = 0; i < focalPoints.length; i++ ) {
-                    self = focalPoints[i];
-                    self.fromCenterX = Math.abs( centerX - ( $(self).offset().left + $(self).width() / 2 ) + minWidth / 2 );
-                    self.fromCenterY =  Math.abs( centerY - ( $(self).offset().top + $(self).height() / 2 ) + minHeight / 2 );
-                }
+      function assignClasses() {
+        var lastFocalPoint = focalPoints.length - 1;
+        if ( $( focalPoints[ lastFocalPoint ] ).hasClass( settings.classToAssign ) ) return false;
+        for ( var f = 0; f < focalPoints.length; f++ ) {
+          $( focalPoints[f] ).removeClass( settings.classToAssign );
+        }
+        $( focalPoints[ lastFocalPoint ] ).addClass( settings.classToAssign );
+        settings.onChange(focalPoints[ lastFocalPoint ]);
+      }
+      function getDistances() {
+        minWidth = $container.scrollLeft();
+        maxWidth = $container.width();
+        centerX = (maxWidth + minWidth) / 2;
+        minHeight = $container.scrollTop();
+        maxHeight = $container.height();
+        centerY = (maxHeight + minHeight) / 2;
+        for ( var i = 0; i < focalPoints.length; i++ ) {
+          self = focalPoints[i];
+          self.fromCenterX = Math.abs( centerX - ( $(self).offset().left + $(self).width() / 2 ) + minWidth / 2 );
+          self.fromCenterY =  Math.abs( centerY - ( $(self).offset().top + $(self).height() / 2 ) + minHeight / 2 );
+        }
 
-            }
-            function sortFocalPoints(){
-            	if ( settings.direction == 'horizontal' ) {
-		                focalPoints = focalPoints.sort(function(a, b) {
-		                    return b.fromCenterY - a.fromCenterY;
-		                });
-		        } else if ( settings.direction == 'vertical' ) {
-	                focalPoints = focalPoints.sort(function(a, b) {
-	                    return b.fromCenterY - a.fromCenterY;
-	                });
-            	} else {
-	            	$.error( 'unable to sort against: ' + settings.direction );
-            	}
-            }
+      }
+      function sortFocalPoints(){
+      	if ( settings.direction == 'horizontal' ) {
+          focalPoints = focalPoints.sort(function(a, b) {
+            return b.fromCenterY - a.fromCenterY;
+          });
+      } else if ( settings.direction == 'vertical' ) {
+          focalPoints = focalPoints.sort(function(a, b) {
+            return b.fromCenterY - a.fromCenterY;
+          });
+      	} else {
+        	$.error( 'unable to sort against: ' + settings.direction );
+      	}
+      }
 
-            /* do the work */
-            $(window).scroll( function() {
-                getDistances();
-                sortFocalPoints();
-                assignClasses();
-            });
-            getDistances();
-            sortFocalPoints();
-            assignClasses();
+      /* do the work */
+      $(window).scroll( function() {
+        getDistances();
+        sortFocalPoints();
+        assignClasses();
+      });
+      getDistances();
+      sortFocalPoints();
+      assignClasses();
 
 		}
 	};
