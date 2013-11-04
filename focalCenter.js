@@ -14,7 +14,8 @@
 			var settings = $.extend( {
 				'direction'         : 'vertical',
 				'classToAssign' : 'focal-center',
-                'relativeContainer' : 'window' //unsupported stub
+        'onChange' : function(sel){},
+        'relativeContainer' : 'window' //unsupported stub
 			}, options);
 
             $this = $(this);
@@ -35,12 +36,15 @@
                 focalPoints.push(self);
             });
 
+
             function assignClasses() {
+                var lastFocalPoint = focalPoints.length - 1;
+                if ( $( focalPoints[ lastFocalPoint ] ).hasClass( settings.classToAssign ) ) return false;
                 for ( var f = 0; f < focalPoints.length; f++ ) {
                     $( focalPoints[f] ).removeClass( settings.classToAssign );
                 }
-                var lastFocalPoint = focalPoints.length - 1;
                 $( focalPoints[ lastFocalPoint ] ).addClass( settings.classToAssign );
+                settings.onChange(focalPoints[ lastFocalPoint ]);
             }
             function getDistances() {
                 minWidth = $container.scrollLeft();
