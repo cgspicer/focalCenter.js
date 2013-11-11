@@ -35,6 +35,9 @@
         self.fromCenterY = Math.abs( centerY - ( $(self).offset().top + $(self).height() / 2 ) + minHeight / 2 );
         focalPoints.push(self);
       });
+      for (var i=0;i<focalPoints.length;i++){
+        focalPoints[i].originalIndex=i;
+      }
 
 
       function assignClasses() {
